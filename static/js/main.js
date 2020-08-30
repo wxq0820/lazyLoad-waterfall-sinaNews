@@ -17,14 +17,14 @@ $(function () {
             this.start()
 
             $(window).on('scroll',function(){
-                if(this.isLoading){
-                    clearTimeout(this.isLoading)
-                }
-                this.isLoading = setTimeout(function(){
-                    if(that.toLoadNewData()){
+                // if(this.isLoading){
+                //     clearTimeout(this.isLoading)
+                // }
+                // this.isLoading = setTimeout(function(){
+                    if(!that.isLoading && that.toLoadNewData()){
                         that.start()
                     }
-                },100) 
+                // },100) 
             })
         },
         start: function(){
@@ -39,11 +39,12 @@ $(function () {
                     })
                 })
             })
-            this.isLoading = false
+            
             console.log('page: '+ this.page)
             this.page++
         },
         getData: function (callback) {
+            var that = this
             $.ajax({
                 url: 'https://photo.sina.cn/aj/v2/index?cate=military',
                 method: 'GET',
@@ -55,6 +56,7 @@ $(function () {
                 }
             }).done(function (ret) {
                 callback(ret)
+                that.isLoading = false
             })
         },
         creatNode: function(data){
